@@ -22,6 +22,11 @@ private:
 	ATank* GetPlayerTank() const;
 	virtual void Tick(float DeltaTime) override;
 	void AimTowardsPlayer();
+	//bool GetSightRayHitLocation(FVector& OutHitLocation) const;
+	//bool GetLookDirection(FVector StartLocation, FVector& LookDirection) const;
+	//bool GetLookVectorHitLocation(FVector LookDirection, FVector& OutHitLocation)const;
+	UPROPERTY(EditAnywhere)
+		float LineTraceRange = 1000000;
 	
 	
 };

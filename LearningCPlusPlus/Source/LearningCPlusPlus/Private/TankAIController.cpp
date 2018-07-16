@@ -46,8 +46,11 @@ void ATankAIController::Tick(float DeltaTime)
 
 void ATankAIController::AimTowardsPlayer()
 {
-	if (!GetPlayerTank()) {
+	ATank* Tank = GetControllerTank();
+	ATank* PlayerTank = GetPlayerTank();
+	if (!Tank || !PlayerTank) {
 		return;
 	}
+	FVector HitLocation = PlayerTank->GetActorLocation();
+	Tank->AimAt(HitLocation);
 }
-
