@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
+#include "TankAimingComponent.h"
+#include "TankMovementComponent.h"
 #include "Tank.generated.h"
 
 UCLASS()
@@ -14,6 +16,10 @@ class LEARNINGCPLUSPLUS_API ATank : public APawn
 
 public:
 	void AimAt(FVector HitLocation);
+
+protected:
+	UTankAimingComponent * TankAimingComponent = nullptr;
+	UTankMovementComponent* TankMovementComponent = nullptr;
 
 private:
 	// Sets default values for this pawn's properties
