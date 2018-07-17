@@ -39,17 +39,9 @@ void UTankAimingComponent::Aim(FVector AimLocation, float LaunchSpeed, bool isPl
 		auto time = GetWorld()->GetTimeSeconds();
 		if (!isPlayer) {
 			MoveBarrel(AimDirection);
-		}
-		else {
 			UE_LOG(LogTemp, Warning, TEXT("%f: Solution Found"), time);
 		}
 		
-	}
-	else {
-		if (isPlayer) {
-			auto time = GetWorld()->GetTimeSeconds();
-			UE_LOG(LogTemp, Warning, TEXT("%f: Solution Not Found"), time);
-		}
 	}
 }
 
@@ -65,14 +57,10 @@ void UTankAimingComponent::SetTurretReference(UTankTurret * TurretToSet)
 void UTankAimingComponent::MoveBarrel(FVector AimDirection)
 {
 	FRotator BarrelRotation = Barrel->GetForwardVector().Rotation();
-	FRotator TurretRotation = Turret->GetForwardVector().Rotation();
 	FRotator AimAsRotator = AimDirection.Rotation();
-	FRotator Combined = FRotator();
-	Combined.Pitch = BarrelRotation.Pitch;
-	Combined.Yaw = TurretRotation.Yaw;
-	FRotator Diff = AimAsRotator - Combined;
-	Barrel->Elevate(5);
-	
+	auto DeltaElevation = AimAsRotator - BarrelRotation;
+	Barrel->Elevate(DeltaElevation.Pitch);
+	Turret->Rotate(DeltaElevation.Yaw);
 
 }
 

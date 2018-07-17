@@ -24,6 +24,10 @@ public:
 	void SetTurretReference(UTankTurret* TurretToSet);
 	UFUNCTION(BlueprintCallable, Category = Setup)
 	void SetBarrelReference(UTankBarrel* BarrelToSet);
+	UFUNCTION(BlueprintCallable)
+	void FireMissle(bool Stop);
+	UFUNCTION(BlueprintCallable)
+	void FireGuns(bool Stop);
 	// Sets default values for this pawn's properties
 	ATank();
 

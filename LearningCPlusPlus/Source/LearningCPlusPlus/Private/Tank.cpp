@@ -11,6 +11,14 @@ void ATank::SetBarrelReference(UTankBarrel * BarrelToSet)
 {
 	TankAimingComponent->SetBarrelReference(BarrelToSet);
 }
+void ATank::FireGuns(bool Stop)
+{
+
+}
+void ATank::FireMissle(bool Stop)
+{
+
+}
 void ATank::SetTurretReference(UTankTurret * TurretToSet)
 {
 	TankAimingComponent->SetTurretReference(TurretToSet);
