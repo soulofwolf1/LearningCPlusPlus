@@ -8,6 +8,8 @@ ABulletProjectile::ABulletProjectile()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(FName("ProjectileMovement"));
+	ProjectileMovement->bAutoActivate = false;
 
 }
 
@@ -23,5 +25,11 @@ void ABulletProjectile::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void ABulletProjectile::LaunchProjectile(float speed)
+{
+	ProjectileMovement->SetVelocityInLocalSpace(FVector::ForwardVector * speed);
+	ProjectileMovement->Activate();
 }
 

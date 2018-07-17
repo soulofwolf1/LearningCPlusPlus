@@ -60,14 +60,16 @@ void ATank::Tick(float DeltaTime)
 	float time = GetWorld()->GetTimeSeconds();
 	if (FiringGuns) {
 		if (time - LastBullet >= BulletCD) {
-			GetWorld()->SpawnActor<ABulletProjectile>(BulletProjectileBP, Turret->GetSocketLocation(FName("Gun")), Turret->GetSocketRotation(FName("Gun")));
+			auto Projectile = GetWorld()->SpawnActor<ABulletProjectile>(BulletProjectileBP, Turret->GetSocketLocation(FName("Gun")), Turret->GetSocketRotation(FName("Gun")));
 			LastBullet = time;
+			Projectile->LaunchProjectile(LaunchSpeed);
 		}
 	}
 	if (FiringMissiles) {
 		if (time - LastMissile >= MissileCD) {
-		GetWorld()->SpawnActor<AMissileProjectile>(MissileProjectileBP, Barrel->GetSocketLocation(FName("Projectile")), Barrel->GetSocketRotation(FName("Projectile")));
+			auto Projectile = GetWorld()->SpawnActor<AMissileProjectile>(MissileProjectileBP, Barrel->GetSocketLocation(FName("Projectile")), Barrel->GetSocketRotation(FName("Projectile")));
 		LastMissile = time;
+		Projectile->LaunchProjectile(LaunchSpeed);
 		}
 	}
 }

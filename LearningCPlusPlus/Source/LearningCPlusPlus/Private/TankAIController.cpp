@@ -5,54 +5,32 @@
 #include "TankPlayerController.h"
 
 
-ATank* ATankAIController::GetControllerTank() const
-{
-	return Cast<ATank>(GetPawn());
-}
-
 void ATankAIController::BeginPlay()
 {
 	Super::BeginPlay();
-	auto Tank = GetControllerTank();
-	auto PCTank = GetPlayerTank();
-	if (!Tank)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Tank is not possesed."));
-	}
-	else {
-		UE_LOG(LogTemp, Warning, TEXT("Tank is AI possesed: %s"), *Tank->GetName());
-	}
-	if (!PCTank)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Player Tank not found."));
-	}
-	else {
-		UE_LOG(LogTemp, Warning, TEXT("Player tank is: %s"), *PCTank->GetName());
-	}
 }
-
-ATank* ATankAIController::GetPlayerTank() const
-{
-	auto PCTank = GetWorld()->GetFirstPlayerController()->GetPawn();
-	if (!PCTank) {
-		return nullptr;
-	}
-	return Cast<ATank>(PCTank);
-}
-
 void ATankAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	AimTowardsPlayer();
-}
-
-void ATankAIController::AimTowardsPlayer()
-{
-	ATank* Tank = GetControllerTank();
-	ATank* PlayerTank = GetPlayerTank();
+	auto PlayerTank = Cast<ATank>(GetWorld()->GetFirstPlayerController()->GetPawn());
+	auto Tank = Cast<ATank>(GetPawn());
 	if (!Tank || !PlayerTank) {
 		return;
 	}
 	FVector HitLocation = PlayerTank->GetActorLocation();
 	Tank->AimAt(HitLocation, false);
+	float distance = FVector::Distance(PlayerTank->GetActorLocation(), Tank->GetActorLocation());
+	if (distance <= 6000) {
+		Tank->FireGuns(false);
+	}
+	else {
+		Tank->FireGuns(true);
+	}
+	if (distance <= 20000) {
+		Tank->FireMissle(false);
+	}
+	else {
+		Tank->FireMissle(true);
+	}
+	
 }
