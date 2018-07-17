@@ -1,5 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 #include "TankAimingComponent.h"
+#include "TankBarrel.h"
+#include "TankTurret.h"
 #include "Kismet/GameplayStatics.h"
 
 
@@ -34,18 +36,28 @@ void UTankAimingComponent::Aim(FVector AimLocation, float LaunchSpeed, bool isPl
 		ESuggestProjVelocityTraceOption::DoNotTrace))
 	{
 		auto AimDirection = OutLaunchVelocity.GetSafeNormal();
+		auto time = GetWorld()->GetTimeSeconds();
 		if (!isPlayer) {
 			MoveBarrel(AimDirection);
 		}
+		else {
+			UE_LOG(LogTemp, Warning, TEXT("%f: Solution Found"), time);
+		}
 		
+	}
+	else {
+		if (isPlayer) {
+			auto time = GetWorld()->GetTimeSeconds();
+			UE_LOG(LogTemp, Warning, TEXT("%f: Solution Not Found"), time);
+		}
 	}
 }
 
-void UTankAimingComponent::SetBarrelReference(UStaticMeshComponent * BarrelToSet)
+void UTankAimingComponent::SetBarrelReference(UTankBarrel * BarrelToSet)
 {
 	Barrel = BarrelToSet;
 }
-void UTankAimingComponent::SetTurretReference(UStaticMeshComponent * TurretToSet)
+void UTankAimingComponent::SetTurretReference(UTankTurret * TurretToSet)
 {
 	Turret = TurretToSet;
 }
@@ -59,6 +71,7 @@ void UTankAimingComponent::MoveBarrel(FVector AimDirection)
 	Combined.Pitch = BarrelRotation.Pitch;
 	Combined.Yaw = TurretRotation.Yaw;
 	FRotator Diff = AimAsRotator - Combined;
+	Barrel->Elevate(5);
 	
 
 }

@@ -6,6 +6,8 @@
 #include "Components/ActorComponent.h"
 #include "TankAimingComponent.generated.h"
 
+class UTankBarrel;
+class UTankTurret;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class LEARNINGCPLUSPLUS_API UTankAimingComponent : public UActorComponent
@@ -16,11 +18,11 @@ public:
 	// Sets default values for this component's properties
 	UTankAimingComponent();
 	void Aim(FVector AimLocation, float LaunchSpeed, bool isPlayer);
-	void SetBarrelReference(UStaticMeshComponent* BarrelToSet);
-	void SetTurretReference(UStaticMeshComponent* TurretToSet);
+	void SetBarrelReference(UTankBarrel* BarrelToSet);
+	void SetTurretReference(UTankTurret* TurretToSet);
 private:
-	UStaticMeshComponent * Barrel = nullptr;
-	UStaticMeshComponent * Turret = nullptr;
+	UTankBarrel * Barrel = nullptr;
+	UTankTurret * Turret = nullptr;
 	void MoveBarrel(FVector AimDirection);
 
 		

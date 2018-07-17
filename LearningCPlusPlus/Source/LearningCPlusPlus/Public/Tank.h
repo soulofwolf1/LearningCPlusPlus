@@ -8,6 +8,10 @@
 #include "TankMovementComponent.h"
 #include "Tank.generated.h"
 
+
+class UTankBarrel;
+class UTankTurret;
+
 UCLASS()
 class LEARNINGCPLUSPLUS_API ATank : public APawn
 {
@@ -17,15 +21,16 @@ class LEARNINGCPLUSPLUS_API ATank : public APawn
 public:
 	void AimAt(FVector HitLocation, bool isPlayer);
 	UFUNCTION(BlueprintCallable, Category = Setup)
-	void SetTurretReference(UStaticMeshComponent* TurretToSet);
+	void SetTurretReference(UTankTurret* TurretToSet);
 	UFUNCTION(BlueprintCallable, Category = Setup)
-	void SetBarrelReference(UStaticMeshComponent* BarrelToSet);
+	void SetBarrelReference(UTankBarrel* BarrelToSet);
 	// Sets default values for this pawn's properties
 	ATank();
 
 protected:
 	UTankAimingComponent * TankAimingComponent = nullptr;
 	UTankMovementComponent* TankMovementComponent = nullptr;
+	//UTankBarrel* TankBarrel = nullptr;
 
 private:
 	
