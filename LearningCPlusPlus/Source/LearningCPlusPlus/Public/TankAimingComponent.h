@@ -15,15 +15,13 @@ class LEARNINGCPLUSPLUS_API UTankAimingComponent : public UActorComponent
 public:	
 	// Sets default values for this component's properties
 	UTankAimingComponent();
-	void Aim(FVector AimLocation, FString Name);
-
-protected:
-	// Called when the game starts
-	virtual void BeginPlay() override;
-
-public:	
-	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+	void Aim(FVector AimLocation, float LaunchSpeed, bool isPlayer);
+	void SetBarrelReference(UStaticMeshComponent* BarrelToSet);
+	void SetTurretReference(UStaticMeshComponent* TurretToSet);
+private:
+	UStaticMeshComponent * Barrel = nullptr;
+	UStaticMeshComponent * Turret = nullptr;
+	void MoveBarrel(FVector AimDirection);
 
 		
 	

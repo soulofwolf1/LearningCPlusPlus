@@ -15,15 +15,20 @@ class LEARNINGCPLUSPLUS_API ATank : public APawn
 
 
 public:
-	void AimAt(FVector HitLocation);
+	void AimAt(FVector HitLocation, bool isPlayer);
+	UFUNCTION(BlueprintCallable, Category = Setup)
+	void SetTurretReference(UStaticMeshComponent* TurretToSet);
+	UFUNCTION(BlueprintCallable, Category = Setup)
+	void SetBarrelReference(UStaticMeshComponent* BarrelToSet);
+	// Sets default values for this pawn's properties
+	ATank();
 
 protected:
 	UTankAimingComponent * TankAimingComponent = nullptr;
 	UTankMovementComponent* TankMovementComponent = nullptr;
 
 private:
-	// Sets default values for this pawn's properties
-	ATank();
+	
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -34,6 +39,8 @@ private:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	UPROPERTY(EditAnywhere, Category = Firing)
+	float LaunchSpeed = 100000;
 	
 	
 };

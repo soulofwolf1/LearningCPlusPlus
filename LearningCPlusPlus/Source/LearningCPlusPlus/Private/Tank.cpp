@@ -1,7 +1,17 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-
 #include "Tank.h"
 
+
+
+
+void ATank::SetBarrelReference(UStaticMeshComponent * BarrelToSet)
+{
+	TankAimingComponent->SetBarrelReference(BarrelToSet);
+}
+void ATank::SetTurretReference(UStaticMeshComponent * TurretToSet)
+{
+	TankAimingComponent->SetTurretReference(TurretToSet);
+}
 
 // Sets default values
 ATank::ATank()
@@ -33,8 +43,8 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 }
-void ATank::AimAt(FVector HitLocation) {
-	TankAimingComponent->Aim(HitLocation, GetName());
+void ATank::AimAt(FVector HitLocation, bool isPlayer) {
+	TankAimingComponent->Aim(HitLocation, LaunchSpeed, isPlayer);
 		/*
 	auto TankName = GetName();
 	UE_LOG(LogTemp, Warning, TEXT("%s is Aiming at %s"), *TankName, *HitLocation.ToString());

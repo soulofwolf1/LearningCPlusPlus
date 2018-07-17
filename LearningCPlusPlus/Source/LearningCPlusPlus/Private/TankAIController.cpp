@@ -1,6 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-
 #include "TankAIController.h"
+
 
 
 ATank* ATankAIController::GetControllerTank() const
@@ -52,5 +52,5 @@ void ATankAIController::AimTowardsPlayer()
 		return;
 	}
 	FVector HitLocation = PlayerTank->GetActorLocation();
-	Tank->AimAt(HitLocation);
+	Tank->AimAt(HitLocation, false);
 }
