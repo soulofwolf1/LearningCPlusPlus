@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
-#include "TankAimingComponent.h"
-#include "TankMovementComponent.h"
 #include "Tank.generated.h"
 
 
 class UTankBarrel;
 class UTankTurret;
+class UTankAimingComponent;
+class UTankMovementComponent;
 
 UCLASS()
 class LEARNINGCPLUSPLUS_API ATank : public APawn
