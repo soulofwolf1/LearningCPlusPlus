@@ -11,6 +11,8 @@ class UTankBarrel;
 class UTankTurret;
 class UTankAimingComponent;
 class UTankMovementComponent;
+class AMissileProjectile;
+class ABulletProjectile;
 
 UCLASS()
 class LEARNINGCPLUSPLUS_API ATank : public APawn
@@ -49,7 +51,19 @@ private:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	UPROPERTY(EditAnywhere, Category = Firing)
-	float LaunchSpeed = 100000;
-	
-	
+	float LaunchSpeed = 5000;
+	UPROPERTY(EditAnywhere, Category = Setup)
+	TSubclassOf<AMissileProjectile> MissileProjectileBP;
+	UPROPERTY(EditAnywhere, Category = Setup)
+	TSubclassOf<ABulletProjectile> BulletProjectileBP;
+	UTankBarrel* Barrel = nullptr;
+	UTankTurret* Turret = nullptr;
+	bool FiringMissiles = false;
+	bool FiringGuns = false;
+	float LastBullet = 0;
+	float LastMissile = 0;
+	UPROPERTY(EditAnywhere, Category = Firing)
+	float BulletCD = 0.1;
+	UPROPERTY(EditAnywhere, Category = Firing)
+	float MissileCD = 1.6;
 };

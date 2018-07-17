@@ -2,6 +2,8 @@
 #include "Tank.h"
 #include "TankBarrel.h"
 #include "TankTurret.h"
+#include "MissileProjectile.h"
+#include "BulletProjectile.h"
 #include "TankAimingComponent.h"
 #include "TankMovementComponent.h"
 
@@ -10,18 +12,28 @@
 void ATank::SetBarrelReference(UTankBarrel * BarrelToSet)
 {
 	TankAimingComponent->SetBarrelReference(BarrelToSet);
+	Barrel = BarrelToSet;
 }
 void ATank::FireGuns(bool Stop)
 {
-
+	if (!Turret) {
+		return;
+	}
+	FiringGuns = !Stop;
+	
 }
 void ATank::FireMissle(bool Stop)
 {
-
+	if (!Barrel) {
+		return;
+	}
+	FiringMissiles = !Stop;
+	
 }
 void ATank::SetTurretReference(UTankTurret * TurretToSet)
 {
 	TankAimingComponent->SetTurretReference(TurretToSet);
+	Turret = TurretToSet;
 }
 
 // Sets default values
@@ -45,7 +57,19 @@ void ATank::BeginPlay()
 void ATank::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	float time = GetWorld()->GetTimeSeconds();
+	if (FiringGuns) {
+		if (time - LastBullet >= BulletCD) {
+			GetWorld()->SpawnActor<ABulletProjectile>(BulletProjectileBP, Turret->GetSocketLocation(FName("Gun")), Turret->GetSocketRotation(FName("Gun")));
+			LastBullet = time;
+		}
+	}
+	if (FiringMissiles) {
+		if (time - LastMissile >= MissileCD) {
+		GetWorld()->SpawnActor<AMissileProjectile>(MissileProjectileBP, Barrel->GetSocketLocation(FName("Projectile")), Barrel->GetSocketRotation(FName("Projectile")));
+		LastMissile = time;
+		}
+	}
 }
 
 // Called to bind functionality to input
