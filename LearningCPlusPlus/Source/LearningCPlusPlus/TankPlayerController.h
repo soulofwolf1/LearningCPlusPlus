@@ -17,7 +17,6 @@ class LEARNINGCPLUSPLUS_API ATankPlayerController : public APlayerController
 	GENERATED_BODY()
 	
 private:
-	ATank* GetControllerTank() const;
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 	void AimTowardsCrosshair();
@@ -31,6 +30,9 @@ private:
 	float CrossHairXLocation = 0.5;
 	UPROPERTY(EditAnywhere)
 	float CrossHairYLocation = 0.3333;
+protected:
+	UFUNCTION(BlueprintCallable, Category = Tank)
+	ATank* GetControllerTank() const;
 
 	
 };

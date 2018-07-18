@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "TankMovementComponent.h"
+#include "TankTracks.h"
 
 
 // Sets default values for this component's properties
@@ -19,24 +20,30 @@ void UTankMovementComponent::SetTracks(UTankTracks * LeftTrackToSet, UTankTracks
 	LeftTrack = LeftTrackToSet;
 	RightTrack = RightTrackToSet;
 }
-
-// Called when the game starts
-void UTankMovementComponent::BeginPlay()
+void UTankMovementComponent::RequestDirectMove(const FVector & MoveVelocity, bool bForceMaxSpeed)
 {
-	Super::BeginPlay();
+	auto AIForwardIntention = MoveVelocity.GetSafeNormal();
+	auto TankForward = GetOwner()->GetActorForwardVector().GetSafeNormal();
+	auto Throw = FVector::DotProduct(AIForwardIntention, TankForward);
+	auto Turn = FVector::CrossProduct(TankForward, AIForwardIntention);
+	auto TurnThrow = Turn.GetSafeNormal();
 
-	// ...
-	
+	IntendMoveForward(Throw);
+	IntendMoveLeft(TurnThrow.Z);
+}
+void UTankMovementComponent::IntendMoveForward(float Throw) {
+	LeftTrack->SetThrottle(Throw);
+	RightTrack->SetThrottle(Throw);
+}
+void UTankMovementComponent::IntendMoveLeft(float Throw) {
+		RightTrack->SetThrottle(Throw);
+		LeftTrack->SetThrottle((-Throw));
 }
 
 
-// Called every frame
-void UTankMovementComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	// ...
-}
+
+
 
 
 

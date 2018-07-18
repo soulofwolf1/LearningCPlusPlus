@@ -9,7 +9,6 @@
 
 class UTankBarrel;
 class UTankTurret;
-class UTankTracks;
 class UTankAimingComponent;
 class UTankMovementComponent;
 class AMissileProjectile;
@@ -27,8 +26,6 @@ public:
 	void SetTurretReference(UTankTurret* TurretToSet);
 	UFUNCTION(BlueprintCallable, Category = Setup)
 	void SetBarrelReference(UTankBarrel* BarrelToSet);
-	UFUNCTION(BlueprintCallable, Category = Setup)
-	void SetTracksReference(UTankTracks* LeftTrackToSet, UTankTracks* RightTrackToSet);
 	UFUNCTION(BlueprintCallable)
 	void FireMissle(bool Stop);
 	UFUNCTION(BlueprintCallable)
@@ -45,9 +42,8 @@ public:
 	float MissileDistance = 12000;
 
 protected:
+	UPROPERTY(BlueprintReadOnly)
 	UTankAimingComponent * TankAimingComponent = nullptr;
-	UTankMovementComponent* TankMovementComponent = nullptr;
-	//UTankBarrel* TankBarrel = nullptr;
 
 private:
 	
@@ -68,6 +64,7 @@ private:
 	UPROPERTY(EditAnywhere, Category = Setup)
 	TSubclassOf<ABulletProjectile> BulletProjectileBP;
 	UTankBarrel* Barrel = nullptr;
+	
 	UTankTurret* Turret = nullptr;
 	bool FiringMissiles = false;
 	bool FiringGuns = false;

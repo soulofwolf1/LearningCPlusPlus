@@ -13,7 +13,7 @@ UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class LEARNINGCPLUSPLUS_API UTankTracks : public UStaticMeshComponent
 {
 	GENERATED_BODY()
-		
+public:
 	UFUNCTION(BlueprintCallable, Category = Input)
 	void SetThrottle(float Throttle);
 	UPROPERTY(EditAnywhere, Category = Input)

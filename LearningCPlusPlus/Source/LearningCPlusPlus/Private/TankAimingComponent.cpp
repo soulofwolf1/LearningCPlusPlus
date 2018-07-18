@@ -37,10 +37,8 @@ void UTankAimingComponent::Aim(FVector AimLocation, float LaunchSpeed, bool isPl
 	{
 		auto AimDirection = OutLaunchVelocity.GetSafeNormal();
 		auto time = GetWorld()->GetTimeSeconds();
-		if (!isPlayer) {
-			MoveBarrel(AimDirection);
-			UE_LOG(LogTemp, Warning, TEXT("%f: Solution Found"), time);
-		}
+		MoveBarrel(AimDirection);
+		
 		
 	}
 }

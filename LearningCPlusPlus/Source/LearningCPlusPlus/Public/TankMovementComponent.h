@@ -3,30 +3,30 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Components/ActorComponent.h"
+#include "GameFramework/NavMovementComponent.h"
 #include "TankMovementComponent.generated.h"
 
 class UTankTracks;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class LEARNINGCPLUSPLUS_API UTankMovementComponent : public UActorComponent
+class LEARNINGCPLUSPLUS_API UTankMovementComponent : public UNavMovementComponent
 {
 	GENERATED_BODY()
 
 public:	
 	// Sets default values for this component's properties
 	UTankMovementComponent();
+	UFUNCTION(BlueprintCallable, Category = Movement)
 	void SetTracks(UTankTracks* LeftTrackToSet, UTankTracks* RightTrackToSet);
-protected:
-	// Called when the game starts
-	virtual void BeginPlay() override;
+	virtual void RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed) override;
 private:
 	UTankTracks* LeftTrack = nullptr;
 	UTankTracks* RightTrack = nullptr;
 public:	
-	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-	
+	UFUNCTION(BlueprintCallable, Category = Input)
+	void IntendMoveForward(float Throw);
+	UFUNCTION(BlueprintCallable, Category = Input)
+	void IntendMoveLeft(float Throw);
 		
 	
 };

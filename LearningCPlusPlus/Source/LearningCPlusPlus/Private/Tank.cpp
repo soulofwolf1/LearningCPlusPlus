@@ -2,7 +2,6 @@
 #include "Tank.h"
 #include "TankBarrel.h"
 #include "TankTurret.h"
-#include "TankTracks.h"
 #include "MissileProjectile.h"
 #include "BulletProjectile.h"
 #include "TankAimingComponent.h"
@@ -15,10 +14,7 @@ void ATank::SetBarrelReference(UTankBarrel * BarrelToSet)
 	TankAimingComponent->SetBarrelReference(BarrelToSet);
 	Barrel = BarrelToSet;
 }
-void ATank::SetTracksReference(UTankTracks * LeftTrackToSet, UTankTracks* RightTrackToSet)
-{
-	TankMovementComponent->SetTracks(LeftTrackToSet, RightTrackToSet);
-}
+
 void ATank::FireGuns(bool Stop)
 {
 	if (!Turret) {
@@ -47,7 +43,6 @@ ATank::ATank()
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	TankAimingComponent = CreateDefaultSubobject<UTankAimingComponent>(FName("AimingComponent"));
-	TankMovementComponent = CreateDefaultSubobject<UTankMovementComponent>(FName("MovementComponent"));
 
 }
 
