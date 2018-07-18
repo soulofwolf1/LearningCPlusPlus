@@ -2,6 +2,7 @@
 #include "Tank.h"
 #include "TankBarrel.h"
 #include "TankTurret.h"
+#include "TankTracks.h"
 #include "MissileProjectile.h"
 #include "BulletProjectile.h"
 #include "TankAimingComponent.h"
@@ -13,6 +14,10 @@ void ATank::SetBarrelReference(UTankBarrel * BarrelToSet)
 {
 	TankAimingComponent->SetBarrelReference(BarrelToSet);
 	Barrel = BarrelToSet;
+}
+void ATank::SetTracksReference(UTankTracks * LeftTrackToSet, UTankTracks* RightTrackToSet)
+{
+	TankMovementComponent->SetTracks(LeftTrackToSet, RightTrackToSet);
 }
 void ATank::FireGuns(bool Stop)
 {

@@ -9,6 +9,7 @@
 
 class UTankBarrel;
 class UTankTurret;
+class UTankTracks;
 class UTankAimingComponent;
 class UTankMovementComponent;
 class AMissileProjectile;
@@ -26,12 +27,22 @@ public:
 	void SetTurretReference(UTankTurret* TurretToSet);
 	UFUNCTION(BlueprintCallable, Category = Setup)
 	void SetBarrelReference(UTankBarrel* BarrelToSet);
+	UFUNCTION(BlueprintCallable, Category = Setup)
+	void SetTracksReference(UTankTracks* LeftTrackToSet, UTankTracks* RightTrackToSet);
 	UFUNCTION(BlueprintCallable)
 	void FireMissle(bool Stop);
 	UFUNCTION(BlueprintCallable)
 	void FireGuns(bool Stop);
 	// Sets default values for this pawn's properties
 	ATank();
+	UPROPERTY(EditAnywhere, Category = Firing)
+	float BulletCD = 0.1;
+	UPROPERTY(EditAnywhere, Category = Firing)
+	float MissileCD = 1.6;
+	UPROPERTY(EditAnywhere, Category = Firing)
+	float BulletDistance = 4500;
+	UPROPERTY(EditAnywhere, Category = Firing)
+	float MissileDistance = 12000;
 
 protected:
 	UTankAimingComponent * TankAimingComponent = nullptr;
@@ -62,8 +73,5 @@ private:
 	bool FiringGuns = false;
 	float LastBullet = 0;
 	float LastMissile = 0;
-	UPROPERTY(EditAnywhere, Category = Firing)
-	float BulletCD = 0.1;
-	UPROPERTY(EditAnywhere, Category = Firing)
-	float MissileCD = 1.6;
+	
 };

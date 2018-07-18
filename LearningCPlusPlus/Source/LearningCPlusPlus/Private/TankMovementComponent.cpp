@@ -14,6 +14,12 @@ UTankMovementComponent::UTankMovementComponent()
 }
 
 
+void UTankMovementComponent::SetTracks(UTankTracks * LeftTrackToSet, UTankTracks * RightTrackToSet)
+{
+	LeftTrack = LeftTrackToSet;
+	RightTrack = RightTrackToSet;
+}
+
 // Called when the game starts
 void UTankMovementComponent::BeginPlay()
 {

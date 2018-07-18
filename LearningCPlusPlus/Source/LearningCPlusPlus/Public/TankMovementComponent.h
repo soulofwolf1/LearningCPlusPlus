@@ -6,6 +6,7 @@
 #include "Components/ActorComponent.h"
 #include "TankMovementComponent.generated.h"
 
+class UTankTracks;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class LEARNINGCPLUSPLUS_API UTankMovementComponent : public UActorComponent
@@ -15,11 +16,13 @@ class LEARNINGCPLUSPLUS_API UTankMovementComponent : public UActorComponent
 public:	
 	// Sets default values for this component's properties
 	UTankMovementComponent();
-
+	void SetTracks(UTankTracks* LeftTrackToSet, UTankTracks* RightTrackToSet);
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
-
+private:
+	UTankTracks* LeftTrack = nullptr;
+	UTankTracks* RightTrack = nullptr;
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
