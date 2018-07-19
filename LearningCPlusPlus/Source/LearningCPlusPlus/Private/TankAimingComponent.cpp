@@ -2,6 +2,8 @@
 #include "TankAimingComponent.h"
 #include "TankBarrel.h"
 #include "TankTurret.h"
+#include "MissileProjectile.h"
+#include "BulletProjectile.h"
 #include "Kismet/GameplayStatics.h"
 
 
@@ -15,9 +17,17 @@ UTankAimingComponent::UTankAimingComponent()
 
 	// ...
 }
+/*
 
+}
+*/
+void UTankAimingComponent::SetReferences(UTankTurret * TurretToSet, UTankBarrel * BarrelToSet)
+{
+	Turret = TurretToSet;
+	Barrel = BarrelToSet;
+}
 
-void UTankAimingComponent::Aim(FVector AimLocation, float LaunchSpeed, bool isPlayer)
+void UTankAimingComponent::Aim(FVector AimLocation, bool isPlayer)
 {
 	if (!Barrel) {
 		return;
@@ -36,20 +46,47 @@ void UTankAimingComponent::Aim(FVector AimLocation, float LaunchSpeed, bool isPl
 		ESuggestProjVelocityTraceOption::DoNotTrace))
 	{
 		auto AimDirection = OutLaunchVelocity.GetSafeNormal();
-		auto time = GetWorld()->GetTimeSeconds();
-		MoveBarrel(AimDirection);
 		
+
+		MoveBarrel(AimDirection);
 		
 	}
 }
 
-void UTankAimingComponent::SetBarrelReference(UTankBarrel * BarrelToSet)
+
+
+
+
+void UTankAimingComponent::FireMissile(float Distance, bool isPlayer)
 {
-	Barrel = BarrelToSet;
+	auto time = GetWorld()->GetTimeSeconds();
+	if (Distance <= MissileDistance) {
+		if (time - LastMissile >= MissileCD) {
+			auto Projectile = GetWorld()->SpawnActor<AMissileProjectile>(MissileProjectileBP, Barrel->GetSocketLocation(FName("Projectile")), Barrel->GetSocketRotation(FName("Projectile")));
+
+			LastMissile = time;
+			Projectile->LaunchProjectile(LaunchSpeed);
+		}
+		else {
+			if (isPlayer) {
+				FiringState = EFiringState::FS_RELOADING;
+			}
+		}
+	}
+
 }
-void UTankAimingComponent::SetTurretReference(UTankTurret * TurretToSet)
+
+void UTankAimingComponent::FireBullet(float Distance)
 {
-	Turret = TurretToSet;
+	auto time = GetWorld()->GetTimeSeconds();
+	if (Distance <= BulletDistance) {
+		if (time - LastBullet >= BulletCD) {
+			auto Projectile = GetWorld()->SpawnActor<ABulletProjectile>(BulletProjectileBP, Turret->GetSocketLocation(FName("Gun")), Turret->GetSocketRotation(FName("Gun")));
+			//
+			LastBullet = time;
+			Projectile->LaunchProjectile(LaunchSpeed);
+		}
+	}
 }
 
 void UTankAimingComponent::MoveBarrel(FVector AimDirection)
@@ -59,6 +96,21 @@ void UTankAimingComponent::MoveBarrel(FVector AimDirection)
 	auto DeltaElevation = AimAsRotator - BarrelRotation;
 	Barrel->Elevate(DeltaElevation.Pitch);
 	Turret->Rotate(DeltaElevation.Yaw);
+	auto time = GetWorld()->GetTimeSeconds();
+	auto checkPitch = Barrel->RelativeRotation.Pitch;
+	auto checkYaw = Turret->RelativeRotation.Yaw;
+	FVector Vec = Barrel->GetForwardVector();
+	if (time - LastMissile < MissileCD) {
+		FiringState = EFiringState::FS_RELOADING;
+	}
+	else if (Vec.Equals(AimDirection, 0.01)) {
+		FiringState = EFiringState::FS_LOCKED_ON;
+	}
+	else {
+		FiringState = EFiringState::FS_AIMING;
+	}
 
 }
+
+
 

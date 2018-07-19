@@ -19,19 +19,8 @@ void ATankAIController::Tick(float DeltaTime)
 	}
 	FVector HitLocation = PlayerTank->GetActorLocation();
 	MoveToActor(PlayerTank, 8000, true, true, false, 0, true);
+	Tank->SetTankDistance(FVector::Distance(PlayerTank->GetActorLocation(), Tank->GetActorLocation()));
 	Tank->AimAt(HitLocation, false);
-	float distance = FVector::Distance(PlayerTank->GetActorLocation(), Tank->GetActorLocation());
-	if (distance <= Tank->BulletDistance) {
-		Tank->FireGuns(false);
-	}
-	else {
-		Tank->FireGuns(true);
-	}
-	if (distance <= Tank->MissileDistance) {
-		Tank->FireMissle(false);
-	}
-	else {
-		Tank->FireMissle(true);
-	}
+	
 	
 }

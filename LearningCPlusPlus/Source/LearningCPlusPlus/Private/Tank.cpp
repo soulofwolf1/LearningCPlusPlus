@@ -1,40 +1,30 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 #include "Tank.h"
-#include "TankBarrel.h"
-#include "TankTurret.h"
-#include "MissileProjectile.h"
-#include "BulletProjectile.h"
+//#include "TankBarrel.h"
+//#include "TankTurret.h"
 #include "TankAimingComponent.h"
-#include "TankMovementComponent.h"
+//#include "TankMovementComponent.h"
 
 
 
-void ATank::SetBarrelReference(UTankBarrel * BarrelToSet)
-{
-	TankAimingComponent->SetBarrelReference(BarrelToSet);
-	Barrel = BarrelToSet;
-}
 
 void ATank::FireGuns(bool Stop)
 {
-	if (!Turret) {
-		return;
-	}
 	FiringGuns = !Stop;
 	
 }
+void ATank::SetTankDistance(float DistanceToSet)
+{
+	Distance = DistanceToSet;
+}
+void ATank::SetAimingComponent(UTankAimingComponent * TankAimingComponentToSet)
+{
+	TankAimingComponent = TankAimingComponentToSet;
+}
 void ATank::FireMissle(bool Stop)
 {
-	if (!Barrel) {
-		return;
-	}
 	FiringMissiles = !Stop;
 	
-}
-void ATank::SetTurretReference(UTankTurret * TurretToSet)
-{
-	TankAimingComponent->SetTurretReference(TurretToSet);
-	Turret = TurretToSet;
 }
 
 // Sets default values
@@ -42,7 +32,7 @@ ATank::ATank()
 {
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	TankAimingComponent = CreateDefaultSubobject<UTankAimingComponent>(FName("AimingComponent"));
+	//TankAimingComponent = CreateDefaultSubobject<UTankAimingComponent>(FName("AimingComponent"));
 
 }
 
@@ -59,18 +49,10 @@ void ATank::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	float time = GetWorld()->GetTimeSeconds();
 	if (FiringGuns) {
-		if (time - LastBullet >= BulletCD) {
-			auto Projectile = GetWorld()->SpawnActor<ABulletProjectile>(BulletProjectileBP, Turret->GetSocketLocation(FName("Gun")), Turret->GetSocketRotation(FName("Gun")));
-			LastBullet = time;
-			Projectile->LaunchProjectile(LaunchSpeed);
-		}
+		TankAimingComponent->FireBullet(Distance);
 	}
 	if (FiringMissiles) {
-		if (time - LastMissile >= MissileCD) {
-			auto Projectile = GetWorld()->SpawnActor<AMissileProjectile>(MissileProjectileBP, Barrel->GetSocketLocation(FName("Projectile")), Barrel->GetSocketRotation(FName("Projectile")));
-		LastMissile = time;
-		Projectile->LaunchProjectile(LaunchSpeed);
-		}
+		TankAimingComponent->FireMissile(Distance, isPlayer);
 	}
 }
 
@@ -81,7 +63,11 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 void ATank::AimAt(FVector HitLocation, bool isPlayer) {
-	TankAimingComponent->Aim(HitLocation, LaunchSpeed, isPlayer);
+	TankAimingComponent->Aim(HitLocation, isPlayer);
+	if (!isPlayer) {
+		TankAimingComponent->FireMissile(Distance, false);
+		TankAimingComponent->FireBullet(Distance);
+	}
 		/*
 	auto TankName = GetName();
 	UE_LOG(LogTemp, Warning, TEXT("%s is Aiming at %s"), *TankName, *HitLocation.ToString());

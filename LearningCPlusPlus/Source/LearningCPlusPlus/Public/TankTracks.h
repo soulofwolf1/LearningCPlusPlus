@@ -13,6 +13,9 @@ UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class LEARNINGCPLUSPLUS_API UTankTracks : public UStaticMeshComponent
 {
 	GENERATED_BODY()
+private:
+	UTankTracks();
+	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
 public:
 	UFUNCTION(BlueprintCallable, Category = Input)
 	void SetThrottle(float Throttle);
