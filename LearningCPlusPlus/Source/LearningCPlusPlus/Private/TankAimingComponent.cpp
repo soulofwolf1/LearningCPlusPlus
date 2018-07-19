@@ -95,10 +95,13 @@ void UTankAimingComponent::MoveBarrel(FVector AimDirection)
 	FRotator AimAsRotator = AimDirection.Rotation();
 	auto DeltaElevation = AimAsRotator - BarrelRotation;
 	Barrel->Elevate(DeltaElevation.Pitch);
-	Turret->Rotate(DeltaElevation.Yaw);
+	if (FMath::Abs(DeltaElevation.Yaw) <= 180) {
+		Turret->Rotate(DeltaElevation.Yaw);
+	}
+	else {
+		Turret->Rotate(-DeltaElevation.Yaw);
+	}
 	auto time = GetWorld()->GetTimeSeconds();
-	auto checkPitch = Barrel->RelativeRotation.Pitch;
-	auto checkYaw = Turret->RelativeRotation.Yaw;
 	FVector Vec = Barrel->GetForwardVector();
 	if (time - LastMissile < MissileCD) {
 		FiringState = EFiringState::FS_RELOADING;
